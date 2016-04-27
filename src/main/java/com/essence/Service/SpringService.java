@@ -1,6 +1,7 @@
 package com.essence.Service;
 
 import com.essence.Model.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -18,13 +19,18 @@ public class SpringService {
     private String ip = "";
     private static final Logger log = LoggerFactory.getLogger(SpringService.class);
     private RestTemplate restTemplate = new RestTemplate();
+    private User getUser;
 
     public User getUser(){
         SimpleClientHttpRequestFactory requestFactory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
         requestFactory.setReadTimeout(3000);
         requestFactory.setConnectTimeout(3000);
         try{
-            User getUser = restTemplate.getForObject(ip + "/C48659EC", User.class);
+            System.out.println("spring");
+            log.info("" + ip);
+            //getUser = restTemplate.getForObject(ip + "/C48659EC", User.class);
+            getUser = restTemplate.getForObject(ip + "/C48659EC", User.class);
+            //getUser = restTemplate.getForObject("http://195.178.224.74:44344/users/C48659EC",User.class);
             log.info(getUser.toString());
             return getUser;
         }catch (Exception e){
@@ -33,15 +39,16 @@ public class SpringService {
         return null;
     }
 
-    public ArrayList<User> getAllUsers(){
+    public User[] getAllUsersTest(){
         SimpleClientHttpRequestFactory requestFactory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
         requestFactory.setReadTimeout(3000);
         requestFactory.setConnectTimeout(3000);
         try{
-            System.out.println("spring");
-            ArrayList<User> list = new ArrayList<>(restTemplate.getForObject(ip, ArrayList.class));
-            log.info(list.toString());
-            return list;
+            System.out.println("SPringing");
+            User[] allUsers = restTemplate.getForObject(ip, User[].class);
+            //log.info("spring " + allUsers[0].getKey().getId());
+            log.info(allUsers.toString());
+            return allUsers;
         }catch (Exception e){
             log.error("Error med att hämta alla");
         }

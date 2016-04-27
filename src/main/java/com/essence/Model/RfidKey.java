@@ -1,11 +1,18 @@
 package com.essence.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+
 /**
  * Created by jonatan on 2016-04-20.
  */
-public class RfidKey {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class RfidKey implements Serializable{
 
     private String id;
+
+    public RfidKey(){};
 
     public RfidKey(String id){
         this.id = id;

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by jonatan on 2016-04-20.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements Serializable{
+public class UserTest implements Serializable{
 
     private String firstName;
     private String lastName;
@@ -18,15 +18,8 @@ public class User implements Serializable{
     @Id
     private String id;
 
-    public User(){
+    public UserTest(){
 
-    }
-
-    public User(String firstName, String lastName,RfidKey key, String id){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.key = key;
-        this.id = id;
     }
 
     public String getFirstName() {

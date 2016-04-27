@@ -20,6 +20,7 @@ public class LoginLayout extends BorderPane {
 
     private Button btnLogin;
     private Button btnHomeLog;
+    private Button btnTest;
     private GridPane pane = new GridPane();
 
     public LoginLayout(){
@@ -33,8 +34,13 @@ public class LoginLayout extends BorderPane {
         btnHomeLog.setOnAction(event -> {
             ctrl.loginHome();
         });
+        btnTest = new Button("TestButton");
+        btnTest.setOnAction(event -> {
+            ctrl.testServer();
+        });
         pane.add(btnLogin,0,0);
         pane.add(btnHomeLog,0,1);
+        pane.add(btnTest,0,2);
         this.setCenter(pane);
     }
 

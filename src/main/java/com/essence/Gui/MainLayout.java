@@ -5,7 +5,9 @@ import com.essence.Model.User;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -15,18 +17,33 @@ import java.util.ArrayList;
 public class MainLayout extends GridPane {
 
     private AppController controller;
-    private ListView<String> listView;
+    private ListView<User> listView;
     private Button btnGetAll;
-    private ArrayList<User> userList;
+    private Button btnAdd;
+    private Button btnUpdate;
+    private Button btnshowInfo;
+    private User currentUser;
+    private Text adminLogg;
+    private User[] userList;
 
     public MainLayout(){
-        listView = new ListView<String>();
+        adminLogg = new Text();
+        listView = new ListView<>();
+        btnAdd = new Button("Add User");
+        btnUpdate = new Button("Update User");
+        btnshowInfo = new Button("Show User Info");
+        btnshowInfo.setOnAction(event1 -> {
+            showInfo();
+        });
         btnGetAll = new Button("Get Users");
         btnGetAll.setOnAction(event -> {
             setList();
         });
-
+        add(adminLogg,0,0);
         add(btnGetAll,7,0);
+        add(btnshowInfo,7,1);
+        add(btnAdd,7,2);
+        add(btnUpdate,7,3);
         add(listView,1,1);
     }
 
@@ -41,12 +58,31 @@ public class MainLayout extends GridPane {
             public void run() {
                 System.out.println("Hello");
                 userList = controller.getUserList();
-                System.out.println("gui" + userList.toString());
-                for (int i = 0; i < userList.size(); i++) {
-                    listView.getItems().add(i,"Userlost" + i);
+                for (int i = 0; i < userList.length; i++) {
+                    //listView.getItems().add(i,userList[i].getFirstName() + " " + userList[i].getLastName());
+                    listView.getItems().add(i,userList[i]);
                 }
             }
         });
     }
 
+    public synchronized void showInfo(){
+        System.out.println(listView.getSelectionModel().getSelectedItem());
+        //System.out.println(userList[1].getKey().getId());
+    }
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        System.out.println("innan login skrivs ut");
+        loginName();
+    }
+    private synchronized void loginName(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                adminLogg.setText(currentUser.getFirstName() + " " + currentUser.getLastName()
+                    + " " + currentUser.getKey().toString());
+
+            }
+        });
+    }
 }
