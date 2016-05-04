@@ -21,20 +21,4 @@ public class SpringServiceTest {
         service.setIp("http://172.16.2.12:44344/users");
     }
 
-    @Test
-    public void testGetUser() throws Exception {
-        User test = service.getUser();
-
-        assertThat(test,instanceOf(User.class) );
-    }
-
-    @Test
-    public void testGetAllUsersTest() throws Exception {
-
-    }
-
-    @Test
-    public void testSetIp() throws Exception {
-
-    }
 }

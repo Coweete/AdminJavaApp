@@ -1,6 +1,7 @@
 package com.essence.Gui;
 
 import com.essence.Controller.AppController;
+import com.essence.Model.Account;
 import com.essence.Model.User;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -22,9 +23,9 @@ public class MainLayout extends GridPane {
     private Button btnAdd;
     private Button btnUpdate;
     private Button btnshowInfo;
-    private User currentUser;
+    private Account currentUser;
     private Text adminLogg;
-    private User[] userList;
+    private Account[] userList;
 
     public MainLayout(){
         adminLogg = new Text();
@@ -44,7 +45,7 @@ public class MainLayout extends GridPane {
         add(btnshowInfo,7,1);
         add(btnAdd,7,2);
         add(btnUpdate,7,3);
-        add(listView,1,1);
+        add(listView,0,1);
     }
 
     public void setController(AppController controller) {
@@ -56,21 +57,16 @@ public class MainLayout extends GridPane {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Hello");
-                userList = controller.getUserList();
-                for (int i = 0; i < userList.length; i++) {
-                    //listView.getItems().add(i,userList[i].getFirstName() + " " + userList[i].getLastName());
-                    listView.getItems().add(i,userList[i]);
-                }
+                //TODO fixa så att listan skrivs ut
+                controller.getAllUsers();
             }
         });
     }
 
     public synchronized void showInfo(){
-        System.out.println(listView.getSelectionModel().getSelectedItem());
-        //System.out.println(userList[1].getKey().getId());
+
     }
-    public void setCurrentUser(User currentUser) {
+    public void setCurrentUser(Account currentUser) {
         this.currentUser = currentUser;
         System.out.println("innan login skrivs ut");
         loginName();
@@ -79,9 +75,7 @@ public class MainLayout extends GridPane {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                adminLogg.setText(currentUser.getFirstName() + " " + currentUser.getLastName()
-                    + " " + currentUser.getKey().toString());
-
+                adminLogg.setText("hello");
             }
         });
     }

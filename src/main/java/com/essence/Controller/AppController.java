@@ -1,17 +1,20 @@
 package com.essence.Controller;
 
+import com.essence.Gui.InfoScene;
 import com.essence.Gui.LoginLayout;
 import com.essence.Gui.MainLayout;
+import com.essence.Gui.SetUpScene;
+import com.essence.Model.Account;
 import com.essence.Model.User;
+import com.essence.Service.RxTxService;
 import com.essence.Service.SpringService;
+import com.essence.helper.AppSerialPortEventListener;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 
 /**
  * Created by jonatan on 2016-04-20.
@@ -25,29 +28,16 @@ public class AppController {
     private String ipHome = "http://195.178.224.74:44344/users";
     private String ipEdu = "http://172.16.2.12:44344/users";
     private Stage primaryStage;
-    private User currentUser;
+    private Account currentUser;
     private MainLayout mainLayout = new MainLayout();
+    private String[] tings;
+    private String usbPort;
+    private String ip;
+    private SetUpScene settingsview = new SetUpScene();
+    private InfoScene infoScene = new InfoScene();
+    private RxTxService rxTxService = new RxTxService();
+    private AppSerialPortEventListener eventListener = new AppSerialPortEventListener();
 
-
-    public void login() {
-        springService.setIp(ipEdu);
-        currentUser = springService.getUser();
-        mainLayout.setController(this);
-        mainLayout.setCurrentUser(currentUser);
-        primaryStage.close();
-        primaryStage.setScene(new Scene(mainLayout,400,400));
-        primaryStage.show();
-    }
-
-    public void loginHome() {
-        springService.setIp(ipHome);
-        currentUser = springService.getUser();
-        mainLayout.setController(this);
-        mainLayout.setCurrentUser(currentUser);
-        primaryStage.close();
-        primaryStage.setScene(new Scene(mainLayout,400,400));
-        primaryStage.show();
-    }
 
     public void setSpringService(SpringService springService){
         this.springService = springService;
@@ -57,26 +47,38 @@ public class AppController {
         this.primaryStage = primaryStage;
     }
 
-    //ArrayList<User>
-    public User[] getUserList() {
-        System.out.println("controller");
-        //ArrayList<User> test = springService.getAllUsers();
-        //log.info("Controller " + test.toString());
-        User[] test = springService.getAllUsersTest();
-        for (int i = 0; i < test.length; i++) {
-            System.out.println(test[i].getFirstName() + " " + test[i].getLastName());
-        }
-        return test;
+
+    //Sätter ip och portnummer
+    public void settings(String[] tings) {
+        this.ip = tings[0] + tings[1];
+        this.usbPort = tings[2];
     }
-    public void testServer(){
-        springService.setIp(ipHome);
-        User[] arr = springService.getAllUsersTest();
-        for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i].getFirstName());
-        }
+
+    // visar setup view
+    public void setUpView(AppController controller) {
+        settingsview.display(controller);
+
     }
-    public User getUser() {
-        springService.getUser();
+
+
+    //Kallar på login
+    public void newLogin(String userName, String passWord) {
+        springService.login(userName,passWord);
+    }
+
+    /**
+     * Testar med rxtx av/på
+     */
+    public void testRxTx() {
+        rxTxService.setEventHandler(eventListener);
+        rxTxService.setCompPort("COM5");
+        log.info("Före tråd");
+        //rxTxService.initialize();
+        //rxTxService.readCard();
+    }
+
+    public Account[] getAllUsers() {
+        //// TODO: 2016-05-03 Fix this shit plzzzz
         return null;
     }
 }

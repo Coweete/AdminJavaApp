@@ -1,6 +1,8 @@
 package testGui;
 
+import com.essence.Controller.AppController;
 import com.essence.Gui.LoginScene;
+import com.essence.Gui.SetUpScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,10 +22,13 @@ public class StartLoginScene extends Application{
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("hello");
 
-        LoginScene scene = new LoginScene();
+        //LoginScene scene = new LoginScene();
+        SetUpScene scene = new SetUpScene();
+        AppController cont = new AppController();
         Button btn = new Button("click me");
         btn.setOnAction(event -> {
-            scene.display();
+            //scene.display();
+            scene.display(cont);
             primaryStage.close();
         });
 
