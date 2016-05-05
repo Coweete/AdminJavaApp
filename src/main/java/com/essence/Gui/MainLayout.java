@@ -2,15 +2,11 @@ package com.essence.Gui;
 
 import com.essence.Controller.AppController;
 import com.essence.Model.Account;
-import com.essence.Model.User;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-
-import java.util.ArrayList;
 
 /**
  * Created by jonatan on 2016-04-20.
@@ -18,7 +14,7 @@ import java.util.ArrayList;
 public class MainLayout extends GridPane {
 
     private AppController controller;
-    private ListView<User> listView;
+    private ListView<Account> listView;
     private Button btnGetAll;
     private Button btnAdd;
     private Button btnUpdate;
@@ -34,7 +30,7 @@ public class MainLayout extends GridPane {
         btnUpdate = new Button("Update User");
         btnshowInfo = new Button("Show User Info");
         btnshowInfo.setOnAction(event1 -> {
-            showInfo();
+            showInfo(getSelectedAccount());
         });
         btnGetAll = new Button("Get Users");
         btnGetAll.setOnAction(event -> {
@@ -53,18 +49,17 @@ public class MainLayout extends GridPane {
     }
 
     public synchronized void setList(){
-        System.out.println("hello1");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                //TODO fixa så att listan skrivs ut
-                controller.getAllUsers();
+                Account[] allUsers = controller.getAllUsers();
+                listView.getItems().addAll(allUsers);
             }
         });
     }
 
-    public synchronized void showInfo(){
-
+    public synchronized void showInfo(Account account){
+        controller.showInfo(account);
     }
     public void setCurrentUser(Account currentUser) {
         this.currentUser = currentUser;
@@ -78,5 +73,9 @@ public class MainLayout extends GridPane {
                 adminLogg.setText("hello");
             }
         });
+    }
+
+    public Account getSelectedAccount() {
+        return listView.getSelectionModel().getSelectedItem();
     }
 }

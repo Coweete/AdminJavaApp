@@ -1,12 +1,6 @@
 package com.essence.Service;
 
-import com.essence.Model.User;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
-
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.*;
 
 /**
  * Created by jonatan on 2016-04-25.

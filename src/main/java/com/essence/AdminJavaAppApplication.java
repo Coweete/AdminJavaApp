@@ -32,11 +32,7 @@ public class AdminJavaAppApplication extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		System.out.println("Fx start");
 		controller.setPrimaryStage(primaryStage);
-		//primaryStage.setScene(new Scene(loginLayout,400,400));
 		primaryStage.setScene(new Scene(loginScene,400,400));
-		//FXMLLoader fxmlLoader = new FXMLLoader();
-		//Parent root = (Parent) fxmlLoader.load(getClass().getResource("gui/loginScene.fxml").openStream());
-		//primaryStage.setScene(new Scene(root,300,275));
 		primaryStage.show();
 	}
 

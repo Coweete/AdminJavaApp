@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class Account implements UserDetails, Serializable {
     private boolean enabled = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
+    private String encryptedUserCredentials;
 
     public Account() {
     }
@@ -148,6 +150,25 @@ public class Account implements UserDetails, Serializable {
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public String getEncryptedUserCredentials() {
+        return encryptedUserCredentials;
+    }
+
+    public void setEncryptedUserCredentials(String encryptedUserCredentials) {
+        this.encryptedUserCredentials = encryptedUserCredentials;
+    }
+
+    public void createAccountFromMap(LinkedHashMap<String, Object> accountMap, String encryptedUserCredentials) {
+        firstName = (String) accountMap.get("firstName");
+        lastName = (String) accountMap.get("lastName");
+        id = (String) accountMap.get("id");
+        accountNonExpired = (Boolean) accountMap.get("accountNonExpired");
+        enabled = (Boolean) accountMap.get("enabled");
+        if(accountMap.get("rfidKey") != null)
+            rfidKey = new RfidKey((String) ((LinkedHashMap<String, Object>) accountMap.get("rfidKey")).get("id"));
+        this.encryptedUserCredentials = encryptedUserCredentials;
     }
 
     @Override

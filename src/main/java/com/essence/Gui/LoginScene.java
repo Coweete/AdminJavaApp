@@ -1,17 +1,13 @@
 package com.essence.Gui;
 
 import com.essence.Controller.AppController;
-import com.essence.Model.User;
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /**
  * Created by jonatan on 2016-04-26.
@@ -43,8 +39,7 @@ public class LoginScene extends VBox{
         passwordField = new PasswordField();
         btnSetUp = new Button("Settings");
         btnSignin = new Button("Sign in");
-        btnSigninHome = new Button("Sign in home");
-        btnInfo = new Button("Info");
+
 
         btnSetUp.setOnAction(event -> {
             controller.setUpView(controller);
@@ -56,20 +51,10 @@ public class LoginScene extends VBox{
                 @Override
                 public void run() {
                     updateLoginInfo();
-                    controller.newLogin(userName,passWord);
+                    controller.login(userName,passWord);
                 }
             });
 
-        });
-
-        btnSigninHome.setOnAction(event -> {
-            //TODO sign in från hemma ? fixa på annat vis
-            System.out.println("thisg to do");
-        });
-
-        btnInfo.setOnAction(event -> {
-            //TODO skriva ut info
-            System.out.println("thigs to do");
         });
 
         textLayout = new GridPane();
@@ -80,10 +65,7 @@ public class LoginScene extends VBox{
 
         buttonLayout = new GridPane();
         buttonLayout.add(btnSetUp,0,0);
-        buttonLayout.add(btnSigninHome,2,0);
-        buttonLayout.add(btnSignin,3,0);
-        buttonLayout.add(btnInfo,0,1);
-
+        buttonLayout.add(btnSignin,1,0);
 
         this.getChildren().addAll(textLayout,buttonLayout);
     }

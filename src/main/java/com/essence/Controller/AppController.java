@@ -1,11 +1,10 @@
 package com.essence.Controller;
 
-import com.essence.Gui.InfoScene;
+import com.essence.Gui.UpdateScene;
 import com.essence.Gui.LoginLayout;
 import com.essence.Gui.MainLayout;
 import com.essence.Gui.SetUpScene;
 import com.essence.Model.Account;
-import com.essence.Model.User;
 import com.essence.Service.RxTxService;
 import com.essence.Service.SpringService;
 import com.essence.helper.AppSerialPortEventListener;
@@ -34,7 +33,7 @@ public class AppController {
     private String usbPort;
     private String ip;
     private SetUpScene settingsview = new SetUpScene();
-    private InfoScene infoScene = new InfoScene();
+    private UpdateScene updateScene = new UpdateScene();
     private RxTxService rxTxService = new RxTxService();
     private AppSerialPortEventListener eventListener = new AppSerialPortEventListener();
 
@@ -57,13 +56,16 @@ public class AppController {
     // visar setup view
     public void setUpView(AppController controller) {
         settingsview.display(controller);
-
     }
 
 
     //Kallar på login
-    public void newLogin(String userName, String passWord) {
-        springService.login(userName,passWord);
+    public void login(String userName, String passWord) {
+        currentUser = springService.login(userName,passWord);
+        primaryStage.close();
+        mainLayout.setController(this);
+        primaryStage.setScene(new Scene(mainLayout,500,500));
+        primaryStage.show();
     }
 
     /**
@@ -77,8 +79,34 @@ public class AppController {
         //rxTxService.readCard();
     }
 
+    /**
+     * Metoden kommer att kalla på serverservicen som hämtar ner alla användare och sedan
+     * kommer den att retunera det till gui
+     * @return alla användare
+     */
     public Account[] getAllUsers() {
-        //// TODO: 2016-05-03 Fix this shit plzzzz
-        return null;
+        return springService.getAllUsers(currentUser.getEncryptedUserCredentials());
+    }
+
+    public void showInfo(Account account) {
+        updateScene.display(account,this);
+    }
+
+    public void updateUser(Account account) {
+        springService.updateUser(account);
+    }
+
+    public void addAccount(Account newUser) {
+        springService.addUser(newUser);
+    }
+
+    public String createCryptedPass(String pass){
+
+
+        return pass;
+    }
+
+    public void deleteAccount(Account account) {
+        springService.deleteUser(account);
     }
 }
