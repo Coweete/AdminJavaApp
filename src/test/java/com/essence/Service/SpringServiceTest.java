@@ -1,18 +1,28 @@
 package com.essence.Service;
 
-import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by jonatan on 2016-04-25.
  */
 public class SpringServiceTest {
 
-    private SpringService service;
 
-    @Before
-    public void setUp() throws Exception {
-        //service.setIp("http://195.178.224.74:44344/users");
-        service.setIp("http://172.16.2.12:44344/users");
+    @Test
+    public void testBasic(){
+        BasicAuthRestTemplate restTemplate = new BasicAuthRestTemplate("admin", "pass");
+        String url = "https://projektessence.se/api/users";
+
+        BasicAuthRestTemplate.trustSelfSignedSSL();
+
+        String got = "";
+        try {
+            // Make the HTTP GET request to the Basic Auth protected URL
+            got = restTemplate.getForObject(url, String.class);
+            System.out.println(got);
+        } catch (Exception e) {
+            System.out.println("error with doing rest "+e.getMessage());
+        }
     }
 
 }

@@ -87,7 +87,8 @@ public class AppController {
      * @return alla användare
      */
     public Account[] getAllUsers() {
-        return springService.getAllUsers(currentUser.getEncryptedUserCredentials());
+        //return springService.getAllUsers(currentUser.getEncryptedUserCredentials());
+        return springService.getAllUsers();
     }
 
     public void showInfo(Account account) {

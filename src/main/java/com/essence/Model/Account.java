@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Base64Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -160,7 +161,7 @@ public class Account implements UserDetails, Serializable {
         this.encryptedUserCredentials = encryptedUserCredentials;
     }
 
-    public void createAccountFromMap(LinkedHashMap<String, Object> accountMap, String encryptedUserCredentials) {
+    public void createAccountFromMap(LinkedHashMap<String, Object> accountMap,String userCredentials,ArrayList<String> authorities) {
         firstName = (String) accountMap.get("firstName");
         lastName = (String) accountMap.get("lastName");
         id = (String) accountMap.get("id");
@@ -168,7 +169,7 @@ public class Account implements UserDetails, Serializable {
         enabled = (Boolean) accountMap.get("enabled");
         if(accountMap.get("rfidKey") != null)
             rfidKey = new RfidKey((String) ((LinkedHashMap<String, Object>) accountMap.get("rfidKey")).get("id"));
-        this.encryptedUserCredentials = encryptedUserCredentials;
+        this.encryptedUserCredentials = userCredentials;
     }
 
     @Override
@@ -187,4 +188,5 @@ public class Account implements UserDetails, Serializable {
                 ", credentialsNonExpired=" + credentialsNonExpired +
                 '}';
     }
+
 }

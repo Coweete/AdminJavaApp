@@ -3,8 +3,11 @@ package com.essence.Gui;
 import com.essence.Controller.AppController;
 import de.root1.rxtxrebundled.App;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -25,12 +28,12 @@ public class SetUpScene {
     private TextField txfIp;
     private TextField txfPort;
     private TextField txfUsbport;
-    //private AppController controller;
 
     public void display(AppController controller){
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
+
 
 
         layout = new GridPane();
@@ -42,6 +45,7 @@ public class SetUpScene {
         txfUsbport = new TextField("OKLART");
         btnQuit = new Button("Quit");
         btnSave = new Button("Save");
+
 
         btnQuit.setOnAction(event -> window.close());
 
@@ -62,6 +66,7 @@ public class SetUpScene {
                 layout.add(btnQuit,1,3);
             }
         });
+
 
 
         window.setScene(new Scene(layout,400,400));

@@ -132,15 +132,16 @@ public class UpdateScene {
         account.setFirstName(textFieldFirstname.getText());
         account.setLastName(textFieldLastname.getText());
         account.setUsername(textFieldUser.getText());
-        account.setRfidKey(new RfidKey(textFieldRfid.getText()));
-        //// TODO: 2016-05-05 kryptera lösenordet
-        //account.setPassword();
+        RfidKey key = new RfidKey(textFieldRfid.getText());
+        key.setEnabled(true);
+        account.setRfidKey(key);
+        account.setPassword(passwordField.getText());
         return account;
     }
 
     public Account getNewAccount() {
         Account newAccount = new Account();
-
+        newAccount = getUpdatedAccount(newAccount);
         return newAccount;
     }
 
