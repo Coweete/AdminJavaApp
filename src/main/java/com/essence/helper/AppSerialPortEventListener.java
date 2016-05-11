@@ -19,8 +19,6 @@ import java.io.InputStreamReader;
 @Component
 public class AppSerialPortEventListener implements gnu.io.SerialPortEventListener {
 
-    @Autowired
-    SpringService service;
 
     private SerialPort serialPort;
     private BufferedReader input;
@@ -38,7 +36,9 @@ public class AppSerialPortEventListener implements gnu.io.SerialPortEventListene
          try {
              String inputLine = input.readLine();
              System.out.println(inputLine);
+             System.out.println("hello team");
              serialPort.close();
+             controller.setNewRfid(inputLine);
 
          }catch (Exception e){
              System.out.println(e.toString());

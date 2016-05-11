@@ -4,10 +4,12 @@ import com.essence.Controller.AppController;
 import com.essence.Model.Account;
 import com.essence.Model.RfidKey;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -28,6 +30,7 @@ public class UpdateScene {
     private TextField textFieldRfid;
     private TextField textFieldFirstname;
     private TextField textFieldLastname;
+    private Text textShowScanStatus;
     private PasswordField passwordField;
     private Button btnSave;
     private Button btnDelete;
@@ -36,6 +39,7 @@ public class UpdateScene {
     private Button btnAdd;
     private Account account;
     private Account newUser;
+    private RfidKey rfidKey;
 
 
     public void display(Account account, AppController controller) {
@@ -43,6 +47,7 @@ public class UpdateScene {
 
         window.initModality(Modality.APPLICATION_MODAL);
 
+        textShowScanStatus = new Text("");
         textFieldFirstname = new TextField();
         textFieldLastname = new TextField();
         textFieldRfid = new TextField();
@@ -80,6 +85,13 @@ public class UpdateScene {
                 paneTextInfo.add(btnAdd, 0, 6);
                 paneTextInfo.add(btnScan, 1, 6);
                 paneTextInfo.add(btnDelete,2,6);
+                paneTextInfo.add(textShowScanStatus,0,7);
+                paneTextInfo.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                            textShowScanStatus.setText("");
+                    }
+                });
             }
         });
 
@@ -117,9 +129,9 @@ public class UpdateScene {
     }
 
     public Account getUpdatedAccount(Account account) {
-        account.setFirstName(textFirstname.getText());
+        account.setFirstName(textFieldFirstname.getText());
         account.setLastName(textFieldLastname.getText());
-        account.setUsername(textUsername.getText());
+        account.setUsername(textFieldUser.getText());
         account.setRfidKey(new RfidKey(textFieldRfid.getText()));
         //// TODO: 2016-05-05 kryptera lösenordet
         //account.setPassword();
@@ -129,8 +141,24 @@ public class UpdateScene {
     public Account getNewAccount() {
         Account newAccount = new Account();
 
-
         return newAccount;
     }
 
+    public synchronized void updateRfid(RfidKey rfidKey) {
+        //this.rfidKey = rfidKey;
+        System.out.println("Inside update scene");
+        System.out.println(rfidKey.getId());
+        textFieldRfid.setText(rfidKey.getId());
+        setScanStatusText("Scan Complete");
+    }
+
+    public synchronized void setScanStatusText(String text){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                textShowScanStatus.setText(text);
+
+            }
+        });
+    }
 }

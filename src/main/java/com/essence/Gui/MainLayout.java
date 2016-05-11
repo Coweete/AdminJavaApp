@@ -14,14 +14,14 @@ import javafx.scene.text.Text;
 public class MainLayout extends GridPane {
 
     private AppController controller;
-    private ListView<Account> listView;
+    private ListView<String> listView;
     private Button btnGetAll;
     private Button btnAdd;
     private Button btnUpdate;
     private Button btnshowInfo;
     private Account currentUser;
     private Text adminLogg;
-    private Account[] userList;
+    private Account[] allUsers;
 
     public MainLayout(){
         adminLogg = new Text();
@@ -52,8 +52,11 @@ public class MainLayout extends GridPane {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Account[] allUsers = controller.getAllUsers();
-                listView.getItems().addAll(allUsers);
+                listView.getItems().clear();
+                allUsers = controller.getAllUsers();
+                for (int i = 0; i < allUsers.length; i++) {
+                    listView.getItems().add(i,allUsers[i].getFirstName() + "," + allUsers[i].getLastName());
+                }
             }
         });
     }
@@ -76,6 +79,13 @@ public class MainLayout extends GridPane {
     }
 
     public Account getSelectedAccount() {
-        return listView.getSelectionModel().getSelectedItem();
+        //return listView.getSelectionModel().getSelectedItem();
+        int i = listView.getSelectionModel().getSelectedIndex();
+        System.out.println(i);
+        //System.out.println(allUsers[i].toString());
+        if(i == -1){
+            return new Account();
+        }
+        return allUsers[i];
     }
 }

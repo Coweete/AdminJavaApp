@@ -5,6 +5,7 @@ import com.essence.Gui.LoginLayout;
 import com.essence.Gui.MainLayout;
 import com.essence.Gui.SetUpScene;
 import com.essence.Model.Account;
+import com.essence.Model.RfidKey;
 import com.essence.Service.RxTxService;
 import com.essence.Service.SpringService;
 import com.essence.helper.AppSerialPortEventListener;
@@ -72,11 +73,12 @@ public class AppController {
      * Testar med rxtx av/på
      */
     public void testRxTx() {
+        rxTxService.setCtrl(this);
         rxTxService.setEventHandler(eventListener);
         rxTxService.setCompPort("COM5");
+        eventListener.setController(this);
         log.info("Före tråd");
-        //rxTxService.initialize();
-        //rxTxService.readCard();
+        rxTxService.initialize();
     }
 
     /**
@@ -102,11 +104,19 @@ public class AppController {
 
     public String createCryptedPass(String pass){
 
-
         return pass;
     }
 
     public void deleteAccount(Account account) {
         springService.deleteUser(account);
+    }
+
+    public void setNewRfid(String newRfid) {
+        RfidKey key = new RfidKey(newRfid);
+        updateScene.updateRfid(key);
+    }
+
+    public void setScanStatus(String scanStatus) {
+        updateScene.setScanStatusText(scanStatus);
     }
 }

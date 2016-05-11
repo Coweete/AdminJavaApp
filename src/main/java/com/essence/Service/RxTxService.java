@@ -97,7 +97,7 @@ public class RxTxService {
             System.err.println(e.toString());
         }
 
-
+        ctrl.setScanStatus("Scan ur card");
     }
 
     /**
@@ -131,22 +131,16 @@ public class RxTxService {
         this.appSerialPortEventListener = eventHandler;
     }
 
-    public void setPiPort(String piPort) {
-        this.piPort = piPort;
-        PORT_NAMES.add(this.piPort);
-        System.out.println("using pi port: " + this.piPort);
-    }
-
     public void setCompPort(String compPort) {
         this.compPort = compPort;
         PORT_NAMES.add(this.compPort);
         System.out.println("COmp port " + this.compPort);
     }
 
-    public void setUsesPi(boolean usesPi) {
-        RxTxService.usesPi = usesPi;
-        System.out.println("usesPi " + RxTxService.usesPi);
+    public void setCtrl(AppController ctrl){
+        this.ctrl = ctrl;
     }
+
 }
 
 

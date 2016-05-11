@@ -47,11 +47,7 @@ public class AdminJavaAppApplication extends Application{
 		springService = new SpringService();
 		controller = new AppController();
 		loginScene.setController(controller);
-
-
 		//loginLayout.setCtrl(controller);
-
-
 		controller.setSpringService(springService);
 
 
