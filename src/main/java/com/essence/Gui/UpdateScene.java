@@ -2,6 +2,7 @@ package com.essence.Gui;
 
 import com.essence.Controller.AppController;
 import com.essence.Model.Account;
+import com.essence.Model.AuthoritiesConstants;
 import com.essence.Model.RfidKey;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.springframework.security.core.authority.AuthorityUtils;
 
 /**
  * Created by jonatan on 2016-04-25.
@@ -102,10 +104,12 @@ public class UpdateScene {
 
         btnDelete.setOnAction(event ->{
             controller.deleteAccount(account);
+            window.close();
         });
 
         btnAdd.setOnAction(event -> {
             controller.addAccount(getNewAccount());
+            window.close();
         });
         btnQuit.setOnAction(event -> window.close());
 
@@ -133,9 +137,11 @@ public class UpdateScene {
         account.setLastName(textFieldLastname.getText());
         account.setUsername(textFieldUser.getText());
         RfidKey key = new RfidKey(textFieldRfid.getText());
-        key.setEnabled(true);
+        //key.setEnabled(true);
         account.setRfidKey(key);
         account.setPassword(passwordField.getText());
+        account.setAuthorities(AuthorityUtils.createAuthorityList(AuthoritiesConstants.USER));
+        System.out.println(account.toString());
         return account;
     }
 

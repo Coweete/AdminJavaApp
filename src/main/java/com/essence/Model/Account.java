@@ -60,6 +60,7 @@ public class Account implements UserDetails, Serializable {
         this.authorities = AuthorityUtils.createAuthorityList(AuthoritiesConstants.USER);
     }
 
+
     public String getFirstName() {
         return firstName;
     }

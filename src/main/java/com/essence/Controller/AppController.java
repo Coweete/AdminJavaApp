@@ -73,9 +73,10 @@ public class AppController {
      * Testar med rxtx av/på
      */
     public void testRxTx() {
+        //// TODO: 2016-05-12 Kontrollera om rfidkortet redan existerar på servern isf ska felmedelande skrivas ut
         rxTxService.setCtrl(this);
         rxTxService.setEventHandler(eventListener);
-        rxTxService.setCompPort("COM5");
+        rxTxService.setCompPort("COM4");
         eventListener.setController(this);
         log.info("Före tråd");
         rxTxService.initialize();

@@ -35,28 +35,28 @@ public class SpringService {
 
     public Account[] getAllUsers(){
         log.info("All users");
-        //169.254.25.235:44344
-        //Account[] allUsers = restTemplate.getForObject("https://projektessence.se/api/users",Account[].class);
-        Account[] allUsers = restTemplate.getForObject("http://169.254.25.235:44344/api/users",Account[].class);
+        Account[] allUsers = restTemplate.getForObject("https://projektessence.se/api/users",Account[].class);
         log.info(Arrays.toString(allUsers));
         return allUsers;
     }
 
     public void updateUser(Account account){
         log.info(account.toString());
-        restTemplate.put("http://169.254.25.235:44344/api/users/" + account.getId(),Account.class,account);
+        HttpEntity<Account> entity = new HttpEntity<>(account);
+        ResponseEntity<Account> update = restTemplate.exchange("https://projektessence.se/api/users/" + account.getId(),
+                HttpMethod.PUT,entity,Account.class);
+        //restTemplate.put("http://169.254.25.235:44344/api/users/" + account.getId(),Account.class,account);
+        log.info("after" + update.getBody());
     }
 
     public Account login(String username, String password){
+        //// TODO: 2016-05-12 fixa så att accountet man får hem är en admin annars ska man inte kunna använda appen
         restTemplate = new BasicAuthRestTemplate(username, password);
         String userCredentials = encryptAuthentication(username,password);
         BasicAuthRestTemplate.trustSelfSignedSSL();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        //169.254.25.235:44344
-        //Map<String,Object> response = restTemplate.getForObject("https://projektessence.se/api/account",Map.class);
-        Map<String,Object> response = restTemplate.getForObject("http://169.254.25.235:44344/api/account",Map.class);
+        Map<String,Object> response = restTemplate.getForObject("https://projektessence.se/api/account",Map.class);
         log.info(response.toString());
-
         Account adminAcc = new Account();
         LinkedHashMap<String,Object> responseMap = (LinkedHashMap<String,Object>) response;
         ArrayList<String> auth = (ArrayList<String>) response.get("authorities");
@@ -64,13 +64,12 @@ public class SpringService {
         LinkedHashMap<String,Object> accountMap = (LinkedHashMap<String,Object>) responseMap.get("principal");
         adminAcc.createAccountFromMap(accountMap,userCredentials,auth);
         log.info("Account: " + adminAcc.toString());
-        return null;
+        return adminAcc;
     }
 
     public void addUser(Account user){
-        //169.254.25.235:44344
-        //Account res = restTemplate.postForObject("https://projektessence.se/api/users",user,Account.class);
-        Account res = restTemplate.postForObject("http://169.254.25.235:44344/api/users",user,Account.class);
+        Account res = restTemplate.postForObject("https://projektessence.se/api/users",user,Account.class);
+        log.info("Added " + res.toString());
     }
 
     public Account getUser(String id){
@@ -80,8 +79,12 @@ public class SpringService {
     }
 
 
-    public void deleteUser(Account user){
-      restTemplate.delete("http://169.254.25.235:44344/api/users/" + user.getId(), Account.class);
+    public void deleteUser(Account account){
+        log.info(account.toString());
+        HttpEntity<Account> entity = new HttpEntity<>(account);
+        ResponseEntity<Account> update = restTemplate.exchange("https://projektessence.se/api/users/" + account.getId(),
+                HttpMethod.DELETE,entity,Account.class);
+        log.info("Deleted" + update.getBody());
     }
 
     private String encryptAuthentication(String username, String password) {
